@@ -1,0 +1,128 @@
+@import url(http://fonts.googleapis.com/css?family=Wallpoet&subset=latin&v2);
+
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+  cursor: pointer;
+}
+header {
+    position: relative;
+}
+header h1 {
+    font-family: 'Wallpoet', cursive;
+    font-size: 55px;
+    -moz-transform: rotate(20deg) skewY(-4deg);
+    text-shadow: 1px 1px 0 #999999, 2px 2px 0 #888888, 3px 3px 0 #777777, 4px 4px 0 #666666, 5px 5px 0 #555555, 5px 5px 0 #444444, 5px 5px 0 #333333, 5px 5px 5px #222222;
+    color: white;
+    position: absolute;
+    right:-45px;
+    top: -45px;
+}
+header h2 {
+    position: absolute;
+    font-family: 'Wallpoet', cursive;
+    font-size: 55px;
+    top: -100px;
+    left: 2px;;
+    color: white;
+    text-shadow: 1px 1px 0 #999999, 2px 2px 0 #888888, 3px 3px 0 #777777, 4px 4px 0 #666666, 5px 5px 0 #555555, 5px 5px 0 #444444, 5px 5px 0 #333333, 5px 5px 5px #222222;
+}
+nav, aside {
+    border: 1px solid #222222;
+    background-color: #444444;
+    box-shadow: 1px 1px 0 #666666, 2px 2px 0 #888888, 3px 3px 0 #AAAAAA;
+    color: white;
+}
+nav ul {
+    list-style: square;
+}
+nav ul li {
+    float: left;
+    margin-left: 2em;
+}
+nav ul:after {
+    content: ".";
+    clear: left;
+    display: block;
+    visibility: hidden;
+    height: 0;
+    font-size: 0;
+}
+aside {
+    width: 20em;
+    float: right;
+    margin-top: -1px;
+    border-top: 1px solid #444444;
+    padding: 10px;
+    -moz-border-radius-bottomleft: 5px;
+    -moz-border-radius-bottomright: 5px;
+}
+section.main {
+    padding: 25px;
+    margin-left: 2em;
+    margin-right: 15em;
+    border-left: 1px solid #444444;
+    box-shadow: 1px 1px 0 #666666, 2px 2px 0 #888888, 3px 3px 0 #AAAAAA;
+    -moz-border-radius-bottomleft: 5px;
+    -moz-border-radius-bottomright: 5px;
+
+}
+
+form label, button {
+    display: block;
+    margin: 5px 0px;
+    position: relative;
+}
+form input, form select {
+    position: absolute;
+    margin-left: 10em;
+}
+
+div.console.ok {
+    background: -moz-linear-gradient(center top , #00C600 0%, #00EC00 2%, #00C700 4%, #009400 96%, #007F00 98%, #009700 100%) repeat scroll 0 0 transparent;
+}
+div.console.error {
+    background: -moz-linear-gradient(center top , #C60000 0%, #EC0000 2%, #C70000 4%, #940000 96%, #7F0000 98%, #970000 100%) repeat scroll 0 0 transparent;
+}
+div.console {
+    background: -moz-linear-gradient(center top , #C6C6C6 0%, #ECECEC 2%, #C7C7C7 4%, #949494 96%, #7F7F7F 98%, #979797 100%) repeat scroll 0 0 transparent;
+    border-color: #A7A7A7 #6A6A6A #545454 #8C8C8C;
+    border-style: solid;
+    border-width: 1px;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+    margin: 10px 0;
+    padding: 10px;
+}
+div.console_wrap {
+    background: -moz-linear-gradient(center top , #272727 0%, #111111 100%) repeat scroll 0 0 transparent;
+    border-bottom: 1px solid #C7C7C7;
+    border-top: 1px solid #DFDFDF;
+    box-shadow: 0 0 3px #000000 inset;
+    color: white;
+    font-family: consolas,consolata,monospace;
+    font-weight: bold;
+    padding: 10px;
+    text-shadow: 0 0 1px rgba(255, 255, 255, 0.5);
+}
+ul#log {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+ul#log.error {
+    background: -moz-linear-gradient(center, bottom, red 0%, #111111 100%) repeat scroll 0 0 transparent;
+}
+ul#log.ok {
+    background: -moz-linear-gradient(center bottom , green 0%, transparent 20px) repeat scroll 0 0 transparent;
+}
+ul#log li.error {
+    color: red;
+}
+ul#log li.end {
+    font-weight: bold;
+}
+

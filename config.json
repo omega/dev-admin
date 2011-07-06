@@ -1,0 +1,7 @@
+{
+    "hostname": "testhost.startsiden.no",
+    "paths": {
+        "dumps": "dumps/",
+        "actions": "actions/"
+    }
+}

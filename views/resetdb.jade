@@ -1,0 +1,10 @@
+h3 Reset DB
+form#resetdb
+  label(for="dump") Select dump
+    select#dump(name="dump")
+      - for (var d in dumps)
+        option(value=dumps[d].file)= dumps[d].name
+  button Restore dump
+div.console
+  div.console_wrap
+    ul#log

@@ -1,0 +1,11 @@
+{
+    "name": "dev-admin"
+  , "version": "0.0.1"
+  , "private": true
+  , "dependencies": {
+      "express": "2.4.0"
+    , "jade": ">= 0.0.1"
+    , "confu": ">= 0.0.3"
+    , "socket.io": ">= 0.7.0"
+  }
+}
