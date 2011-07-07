@@ -128,7 +128,7 @@ io.sockets.on("connection", function(socket) {
         console.log(e.name);
         socket.on(e.name, function(data) {
             console.log("Got " + e.name + " event!", data);
-            DATA.actions[e.name].cb(e.name, data, socket, bash);
+            bash.run(e.name, data, socket);
         });
     }
 });
@@ -165,7 +165,6 @@ function refresh_data() {
             // XXX: Should ad something here for the form/input params!
             actions[name] = {
                 name: name,
-                cb: require(path.join(config.paths.actions, name, 'callback.js'))
             }
         }
         DATA.actions = actions;
