@@ -16,6 +16,8 @@ header h1 {
     font-family: 'Wallpoet', cursive;
     font-size: 55px;
     -moz-transform: rotate(20deg) skewY(-4deg);
+    transform: rotate(20deg) skewY(-4deg);
+    -webkit-transform: rotate(20deg) skewY(-4deg);
     text-shadow: 1px 1px 0 #999999, 2px 2px 0 #888888, 3px 3px 0 #777777, 4px 4px 0 #666666, 5px 5px 0 #555555, 5px 5px 0 #444444, 5px 5px 0 #333333, 5px 5px 5px #222222;
     color: white;
     position: absolute;
@@ -60,6 +62,8 @@ aside {
     padding: 10px;
     -moz-border-radius-bottomleft: 5px;
     -moz-border-radius-bottomright: 5px;
+    -webkit-border-bottom-left-radius: 5px;
+    -webkit-border-bottom-right-radius: 5px;
 }
 section.main {
     padding: 25px;
@@ -67,11 +71,17 @@ section.main {
     margin-right: 15em;
     border-left: 1px solid #444444;
     box-shadow: 1px 1px 0 #666666, 2px 2px 0 #888888, 3px 3px 0 #AAAAAA;
+    -webkit-box-shadow: 1px 1px 0 #666666, 2px 2px 0 #888888, 3px 3px 0 #AAAAAA;
     -moz-border-radius-bottomleft: 5px;
     -moz-border-radius-bottomright: 5px;
+    -webkit-border-bottom-left-radius: 5px;
+    -webkit-border-bottom-right-radius: 5px;
 
 }
 
+form[running="running"] {
+    background-color: red;
+}
 form label, button {
     display: block;
     margin: 5px 0px;
@@ -84,21 +94,36 @@ form input, form select {
 
 div.console.ok {
     background: -moz-linear-gradient(center top , #00C600 0%, #00EC00 2%, #00C700 4%, #009400 96%, #007F00 98%, #009700 100%) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#00C600), color-stop(0.02, #00EC00), color-stop(0.04, #00C700), color-stop(0.96, #009400), color-stop(0.98, #007F00), to(#009700));
 }
 div.console.error {
     background: -moz-linear-gradient(center top , #C60000 0%, #EC0000 2%, #C70000 4%, #940000 96%, #7F0000 98%, #970000 100%) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#C60000), color-stop(0.02, #EC0000), color-stop(0.04, #C70000), color-stop(0.96, #940000), color-stop(0.98, #7F0000), to(#970000));
 }
 div.console {
     background: -moz-linear-gradient(center top , #C6C6C6 0%, #ECECEC 2%, #C7C7C7 4%, #949494 96%, #7F7F7F 98%, #979797 100%) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#C6C6C6), color-stop(0.02, #ECECEC), color-stop(0.04, #C7C7C7), color-stop(0.96, #949494), color-stop(0.98, #7F7F7F), to(#979797));
     border-color: #A7A7A7 #6A6A6A #545454 #8C8C8C;
     border-style: solid;
     border-width: 1px;
     box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
     margin: 10px 0;
     padding: 10px;
+    position: relative;
 }
+
+div.console.running:after {
+    content: 'running';
+    position: absolute;
+    z-index:2;
+    top: 10px;
+    right: 10px;
+    color: white;
+}
+
 div.console_wrap {
     background: -moz-linear-gradient(center top , #272727 0%, #111111 100%) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#272727), to(#111));
     border-bottom: 1px solid #C7C7C7;
     border-top: 1px solid #DFDFDF;
     box-shadow: 0 0 3px #000000 inset;
@@ -113,16 +138,14 @@ ul#log {
     margin: 0;
     padding: 0;
 }
-ul#log.error {
-    background: -moz-linear-gradient(center, bottom, red 0%, #111111 100%) repeat scroll 0 0 transparent;
-}
-ul#log.ok {
-    background: -moz-linear-gradient(center bottom , green 0%, transparent 20px) repeat scroll 0 0 transparent;
-}
 ul#log li.error {
     color: red;
 }
 ul#log li.end {
     font-weight: bold;
+}
+ul#log li.input:before {
+    content: '# ';
+    color: blue;
 }
 
