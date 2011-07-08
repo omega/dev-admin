@@ -7,6 +7,7 @@ drush sql-drop -y
 
 zcat $dump | mysql $db
 
-drush status
 drush dbup -y
-
+drush cc all
+drush pm-enable update
+drush pm-refresh
