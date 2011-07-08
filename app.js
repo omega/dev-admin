@@ -13,11 +13,11 @@ var express = require('express')
   , spawn = require("child_process").spawn
   ;
 
-var backlog = new Array(80);
+var backlog = new Array();
 var bash = spawn_shell();
 
 function spawn_shell() {
-
+    backlog = new Array();
     bash = spawn("bash");
     bash.on("exit", function(code) {
         io.sockets.emit("action-done", {'code': code});
@@ -30,11 +30,13 @@ function spawn_shell() {
                 //backlog.unshift();
             //}
             io.sockets.emit("action-stdout", { text: line });
+            backlog.push({text: line, type: 'stdout'});
         });
     });
     bash.stderr.on("data", function(data) {
         data.toString().split(/\n/).forEach(function(line) {
             io.sockets.emit("action-stderr", { text: line });
+            backlog.push({text: line, type: 'stderr'});
         });
     });
     bash.run = function(action, params, origin) {
@@ -44,14 +46,19 @@ function spawn_shell() {
         // Need to send params first!
         for ( var k in params ) {
             bash.stdin.write(k + "=" + params[k] + "\n");
-            io.sockets.emit('action-variable', { name: k, value: params[k] });
+            io.sockets.emit('action-variable', { name: k, value: params[k], vtype: "var" });
+            backlog.push({name: k, value: params[k], type: 'variable'});
+
         }
         // also check for extra params in config!
         if (config.actions[action]) {
             for (var k in config.actions[action]) {
                 bash.stdin.write(k + "=" + config.actions[action][k] + "\n");
                 io.sockets.emit('action-variable', {
-                    name: k, value: config.actions[action][k], type: 'config'
+                    name: k, value: config.actions[action][k], vtype: 'config'
+                });
+                backlog.push({
+                    name: k, value: config.actions[action][k], type: 'variable'
                 });
             }
         }
@@ -60,8 +67,10 @@ function spawn_shell() {
             data.toString().split(/\n/).forEach(function(line) {
                 if (line.match(/^\#/)) {
                     bash.origin.emit('action-comment', { text: line });
+                    backlog.push({text: line, type: 'comment'});
                 } else {
                     io.sockets.emit('action-stdin', { text: line });
+                    backlog.push({text: line, type: 'stdin'});
                     if (config.debug && !line.match(/exit \d+/)) line = "echo \"" + line + "\"";
                     bash.stdin.write(line + "\n");
                 }
@@ -127,8 +136,8 @@ app.listen(8075);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
 
 io.sockets.on("connection", function(socket) {
-    //socket.emit("action-scrollback", { lines: backlog });
     if (bash.running) {
+        socket.emit("action-scrollback", { lines: backlog });
         bash.origin.broadcast.emit('action-running');
     }
     for (var i in DATA.actions) {
