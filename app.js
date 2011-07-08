@@ -19,7 +19,6 @@ function spawn_shell() {
 
     bash = spawn("bash");
     bash.on("exit", function(code) {
-        console.log("EXIT!");
         io.sockets.emit("action-done", {'code': code});
         bash = spawn_shell();
     });
@@ -29,13 +28,11 @@ function spawn_shell() {
             //while (backlog.length > 80) {
                 //backlog.unshift();
             //}
-            console.log("emitting stdout: " + line);
             io.sockets.emit("action-stdout", { text: line });
         });
     });
     bash.stderr.on("data", function(data) {
         data.toString().split(/\n/).forEach(function(line) {
-            console.log("STDERR: " + line);
             io.sockets.emit("action-stderr", { text: line });
         });
     });
@@ -45,14 +42,12 @@ function spawn_shell() {
         io.sockets.emit('action-new');
         // Need to send params first!
         for ( var k in params ) {
-            console.log(k, params[k]);
             bash.stdin.write(k + "=" + params[k] + "\n");
             io.sockets.emit('action-variable', { name: k, value: params[k] });
         }
         var script = new fs.ReadStream(path.join('actions', action, 'script.sh'));
         script.on("data", function(data) {
             data.toString().split(/\n/).forEach(function(line) {
-                console.log("Sending to bash: " + line);
                 if (line.match(/^\#/)) {
                     bash.origin.emit('action-comment', { text: line });
                 } else {
@@ -125,9 +120,7 @@ io.sockets.on("connection", function(socket) {
     }
     for (var i in DATA.actions) {
         var e = DATA.actions[i];
-        console.log(e.name);
         socket.on(e.name, function(data) {
-            console.log("Got " + e.name + " event!", data);
             bash.run(e.name, data, socket);
         });
     }

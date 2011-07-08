@@ -12,7 +12,6 @@ $(document).ready(function() {
         $('.console').removeClass('running');
     });
     socket.on("action-stdout", function(data) {
-        console.log("Got stdout!", data);
         $('#log').append('<li>' + data.text + '</li>');
     });
     socket.on("action-stderr", function(data) {
@@ -39,12 +38,10 @@ $(document).ready(function() {
     $('form').submit(function() {
         // XXX: Need to generalize this to support more actions
         if ($('form').attr('running') == 'running') {
-            console.log("disabled");
             return false;
         }
         var dump = { dump: $('#dump').val(), db: "drupal6" }; // XXX: hardcoded db name
         var action = window.location.pathname.match(/^\/([a-z]*)/)[1];
-        console.log(action);
         socket.emit(action, dump);
         return false;
     });
