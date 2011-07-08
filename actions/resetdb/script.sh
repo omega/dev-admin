@@ -11,4 +11,3 @@ drush dbup -y
 drush cc all
 drush pm-enable update -y
 drush pm-refresh
-exit 0

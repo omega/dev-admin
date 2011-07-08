@@ -62,6 +62,7 @@ function spawn_shell() {
                 });
             }
         }
+        bash.stdin.write("set -e\n"); // Enable exit on error!
         var script = new fs.ReadStream(path.join('actions', action, 'script.sh'));
         script.on("data", function(data) {
             data.toString().split(/\n/).forEach(function(line) {
@@ -77,6 +78,7 @@ function spawn_shell() {
             });
         });
         script.on("end", function() {
+            bash.stdin.write("exit 0\n"); // To make sure we exit and spawn a new bash
             io.sockets.emit('action-end');
         });
     }
