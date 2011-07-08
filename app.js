@@ -7,7 +7,7 @@ var config = require('confu')(__dirname, 'config.json');
 var express = require('express')
   , fs = require('fs')
   , path = require('path')
-  , DATA = {}
+  , DATA = { actions: {} }
   , timers = {}
   , spawn = require("child_process").spawn
   ;
@@ -104,11 +104,11 @@ app.get('/', function(req, res){
 });
 app.get('/favicon.ico', function(req, res) { res.send() });
 app.get('/:action', function(req, res) {
-    res.render(req.params.action, {
+    res.render('action', {
         title: 'dev-admin :: ' + req.params.action,
         hostname: config.hostname,
         "actions": DATA.actions,
-        "dumps": DATA.dumps
+        action: DATA.actions[req.params.action]
     });
 });
 
@@ -136,33 +136,22 @@ timers.refresh_data = setInterval(function() {
 */
 
 function refresh_data() {
-    fs.readdir(config.paths.dumps, function(err, files) {
-        if (err) { return console.error("ERROR reading dumps: ", err); }
-        var dumps = {};
-
-        for (i in files) {
-            var file = files[i];
-            var name = path.basename(file, path.extname(file));
-            dumps[name] = {
-                file: path.join(config.paths.dumps, file),
-                name: name
-            };
-        }
-        DATA.dumps = dumps;
-    });
     fs.readdir(config.paths.actions, function(err, folders) {
         if (err) { return console.error("ERROR reading actions: ", err); }
-        var actions = {};
 
         for (i in folders) {
             var name = folders[i];
+            // Skip some hidden trash
             if (name.match(/^\./)) continue;
+            // We do not presently reload actions (require caches anyways)
+            if (typeof(DATA.actions[name]) != 'undefined') continue;
+
             // XXX: Should ad something here for the form/input params!
-            actions[name] = {
+            DATA.actions[name] = {
                 name: name,
+                opts: require(path.join(config.paths.actions, name, 'params.js'))
             }
         }
-        DATA.actions = actions;
     });
 }
 

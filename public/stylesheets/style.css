@@ -83,13 +83,13 @@ form[running="running"] {
     background-color: red;
 }
 form label, button {
-    display: block;
-    margin: 5px 0px;
+    display: inline;
+    margin: 5px 5px;
     position: relative;
+    font-weight: bold;
 }
 form input, form select {
-    position: absolute;
-    margin-left: 10em;
+    margin: 0px 10px;
 }
 
 div.console.ok {
