@@ -11,7 +11,8 @@ var opts = {
         dump: {
                   label: 'Select dump',
                   type: 'select',
-                  options: function() {
+                  refresh_options: function() {
+                      console.log("in refresh_options");
                       fs.readdir(config.paths.dumps, function(err, files) {
                           if (err) { return console.error("ERROR reading dumps: ", err); }
                           var dumps = [];
@@ -23,7 +24,8 @@ var opts = {
                           }
                           opts.params.dump.options = dumps
                       });
-                  }()
+                  }(),
+                  options: []
               },
         db: {
                 label: 'DB',
