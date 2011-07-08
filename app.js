@@ -158,10 +158,18 @@ function refresh_data() {
             if (typeof(DATA.actions[name]) != 'undefined') continue;
 
             // XXX: Should ad something here for the form/input params!
+            var opts;
+            try {
+                opts = require(path.join(config.paths.actions, name, 'params.js'));
+            } catch (e) {
+                console.log("Error loading params for " + name);
+            }
             DATA.actions[name] = {
                 name: name,
-                opts: require(path.join(config.paths.actions, name, 'params.js'))
+                opts: opts
             }
+            // XXX: Need to walk and update any refresh_options calls!
+            //if (typeof(DATA.actions[name].opts.params
         }
     });
 }
