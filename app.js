@@ -46,6 +46,15 @@ function spawn_shell() {
             bash.stdin.write(k + "=" + params[k] + "\n");
             io.sockets.emit('action-variable', { name: k, value: params[k] });
         }
+        // also check for extra params in config!
+        if (config.actions[action]) {
+            for (var k in config.actions[action]) {
+                bash.stdin.write(k + "=" + config.actions[action][k] + "\n");
+                io.sockets.emit('action-variable', {
+                    name: k, value: config.actions[action][k], type: 'config'
+                });
+            }
+        }
         var script = new fs.ReadStream(path.join('actions', action, 'script.sh'));
         script.on("data", function(data) {
             data.toString().split(/\n/).forEach(function(line) {

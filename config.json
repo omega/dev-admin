@@ -4,5 +4,10 @@
     "paths": {
         "dumps": "dumps/",
         "actions": "actions/"
+    },
+    "actions": {
+        "resetdb": {
+            "drupal_path": "/var/www/somesite.com/drupal6/"
+        }
     }
 }
