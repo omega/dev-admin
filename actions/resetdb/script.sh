@@ -9,6 +9,6 @@ zcat $dump | mysql -u root $db
 
 drush dbup -y
 drush cc all
-drush pm-enable update
+drush pm-enable update -y
 drush pm-refresh
 exit 0
