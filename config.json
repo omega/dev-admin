@@ -1,4 +1,5 @@
 {
+    "debug": true,
     "hostname": "testhost.startsiden.no",
     "paths": {
         "dumps": "dumps/",

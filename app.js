@@ -53,6 +53,7 @@ function spawn_shell() {
                     bash.origin.emit('action-comment', { text: line });
                 } else {
                     io.sockets.emit('action-stdin', { text: line });
+                    if (config.debug) line = "echo \"" + line + "\"";
                     bash.stdin.write(line + "\n");
                 }
             });
