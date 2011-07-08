@@ -67,6 +67,7 @@ aside {
 }
 section.main {
     padding: 25px;
+    padding-right: 5em;
     margin-left: 2em;
     margin-right: 15em;
     border-left: 1px solid #444444;
@@ -79,6 +80,9 @@ section.main {
 
 }
 
+form {
+    margin-right: 45px;
+}
 form[running="running"] {
     background-color: red;
 }
@@ -110,6 +114,7 @@ div.console {
     margin: 10px 0;
     padding: 10px;
     position: relative;
+    margin-right: 45px;
 }
 
 div.console.running:after {
