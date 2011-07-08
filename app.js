@@ -3,7 +3,8 @@
  * Module dependencies.
  */
 
-var config = require('confu')(__dirname, 'config.json');
+var config = require('confu')(process.cwd(), 'config'
+        + (process.env.LOCAL_CONFIG ? "_" + process.env.LOCAL_CONFIG : '') +  '.json');
 var express = require('express')
   , fs = require('fs')
   , path = require('path')
