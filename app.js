@@ -143,10 +143,12 @@ io.sockets.on("connection", function(socket) {
         bash.origin.broadcast.emit('action-running');
     }
     for (var i in DATA.actions) {
-        var e = DATA.actions[i];
-        socket.on(e.name, function(data) {
-            bash.run(e.name, data, socket);
-        });
+        (function() {
+            var e = DATA.actions[i];
+            socket.on(e.name, function(data) {
+                bash.run(e.name, data, socket);
+            });
+        })();
     }
 });
 
