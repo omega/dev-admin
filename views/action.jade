@@ -1,12 +1,16 @@
-h3=action.opts.name
-form
-  - for (var f in action.opts.params)
-    label(for=f)= action.opts.params[f].label
-      - if (typeof(action.opts.params[f].options) != "undefined")
-        select(name=f, id=f)
-          - for (var d in action.opts.params[f].options)
-            option= action.opts.params[f].options[d]
-  button= action.opts.button
+- if (typeof(action.opts) != "undefined")
+  h3=action.opts.name
+  form
+    - for (var f in action.opts.params)
+      label(for=f)= action.opts.params[f].label
+        - if (typeof(action.opts.params[f].options) != "undefined")
+          select(name=f, id=f)
+            - for (var d in action.opts.params[f].options)
+              option= action.opts.params[f].options[d]
+    button= action.opts.button
+- else
+  form
+    button Run script
 div.console
   div.console_wrap
     ul#log
