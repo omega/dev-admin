@@ -1,4 +1,4 @@
-var config = require('confu')(process.cwd(), 'config'
+var config = require('confu')(__dirname + '../../', 'config'
         + (process.env.LOCAL_CONFIG ? "_" + process.env.LOCAL_CONFIG : '') +  '.json');
 var fs = require('fs')
   , path = require('path')
