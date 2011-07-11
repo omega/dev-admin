@@ -25,12 +25,14 @@ function spawn_shell() {
     });
     bash.stdout.on("data", function(data) {
         data.toString().split(/\n/).forEach(function(line) {
-            //backlog.push(line);
-            //while (backlog.length > 80) {
-                //backlog.unshift();
-            //}
-            io.sockets.emit("action-stdout", { text: line });
-            backlog.push({text: line, type: 'stdout'});
+            var match = line.match(/XxXx(\d+)/)
+            if (match) {
+                // Should execute next line!
+                bash.send_line(parseInt(match[1]) + 1);
+            } else {
+                io.sockets.emit("action-stdout", { text: line });
+                backlog.push({text: line, type: 'stdout'});
+            }
         });
     });
     bash.stderr.on("data", function(data) {
@@ -42,6 +44,7 @@ function spawn_shell() {
     bash.run = function(action_config, params, origin) {
         var group = action_config.group;
         var action = action_config.name;
+        var script = action_config.script;
 
         console.log("RUNNING: ", (group ? group : '(groupless)'), action);
         bash.origin = origin;
@@ -69,24 +72,34 @@ function spawn_shell() {
         bash.stdin.write("set -e\n"); // Enable exit on error!
         bash.stdin.write("date\n"); // We log the start date, for good show!
 
-        action_config.script.forEach(function(line, i, a) {
-            if (line.match(/^\#/)) {
+        // Should just do the first line here, and have an event-handler on
+        // stdout listen for the magic marker and have that run the next line?
+
+        bash.send_line = function(i) {
+            var line = script[i];
+            if (typeof(line) == "undefined") {
+                // end of the rail!
+                bash.stdin.write("exit 0\n"); // To make sure we exit and spawn a new bash
+                io.sockets.emit('action-end');
+            } else if (line.match(/^\#/)) {
                 bash.origin.emit('action-comment', { text: line });
                 backlog.push({text: line, type: 'comment'});
+                bash.send_line(i+1); // We just send next right away!
             } else {
                 io.sockets.emit('action-stdin', { text: line });
                 backlog.push({text: line, type: 'stdin'});
                 if (config.debug && !line.match(/exit \d+/))
                     line = "echo \"" + line + "\"";
                 bash.stdin.write(line + "\n");
+                bash.stdin.write("echo XxXx" + i + "\n");
             }
-            if ((i + 1) == a.length) {
-                // This is the end!
-                bash.stdin.write("exit 0\n"); // To make sure we exit and spawn a new bash
-                io.sockets.emit('action-end');
-            }
-        });
+        };
+
+        bash.send_line(0);
+
     }
+
+
     bash.running = false;
     return bash;
 }
