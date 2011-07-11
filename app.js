@@ -68,23 +68,23 @@ function spawn_shell() {
 
         bash.stdin.write("set -e\n"); // Enable exit on error!
         bash.stdin.write("date\n"); // We log the start date, for good show!
-        var script = new fs.ReadStream(path.join(config.paths.actions, (group ? group : ''), action, 'script.sh'));
-        script.on("data", function(data) {
-            data.toString().split(/\n/).forEach(function(line) {
-                if (line.match(/^\#/)) {
-                    bash.origin.emit('action-comment', { text: line });
-                    backlog.push({text: line, type: 'comment'});
-                } else {
-                    io.sockets.emit('action-stdin', { text: line });
-                    backlog.push({text: line, type: 'stdin'});
-                    if (config.debug && !line.match(/exit \d+/)) line = "echo \"" + line + "\"";
-                    bash.stdin.write(line + "\n");
-                }
-            });
-        });
-        script.on("end", function() {
-            bash.stdin.write("exit 0\n"); // To make sure we exit and spawn a new bash
-            io.sockets.emit('action-end');
+
+        action_config.script.forEach(function(line, i, a) {
+            if (line.match(/^\#/)) {
+                bash.origin.emit('action-comment', { text: line });
+                backlog.push({text: line, type: 'comment'});
+            } else {
+                io.sockets.emit('action-stdin', { text: line });
+                backlog.push({text: line, type: 'stdin'});
+                if (config.debug && !line.match(/exit \d+/))
+                    line = "echo \"" + line + "\"";
+                bash.stdin.write(line + "\n");
+            }
+            if ((i + 1) == a.length) {
+                // This is the end!
+                bash.stdin.write("exit 0\n"); // To make sure we exit and spawn a new bash
+                io.sockets.emit('action-end');
+            }
         });
     }
     bash.running = false;
@@ -207,9 +207,23 @@ function read_actions_from_dir(dir, group) {
                     group: group
                 }
                 // XXX: Need to walk and update any refresh_options calls!
-                //if (typeof(DATA.actions[name].opts.params
+                //if (typeof(DATA.actions[name].opts.params))
+                read_script(DATA.actions[name]);
             }
         }
+    });
+}
+
+function read_script(action) {
+    var script = new fs.ReadStream(path.join(config.paths.actions, (action.group ? action.group : ''), action.name, 'script.sh'));
+    action.script = [];
+    script.on("data", function(data) {
+        data.toString().split(/\n/).forEach(function(line) {
+            action.script.push(line);
+        });
+    });
+    script.on("end", function() {
+        console.log("Done reading in ", action.name);
     });
 }
 
