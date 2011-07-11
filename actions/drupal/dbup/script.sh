@@ -1,3 +1,4 @@
 cd $drupal_path
-drush dbup -y
+pwd
+drush updatedb -y
 drush cc all

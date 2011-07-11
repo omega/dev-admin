@@ -2,6 +2,8 @@
 # Script to reset a given DB
 
 cd $drupal_path
+pwd
+env
 
 drush sql-drop -y
 
