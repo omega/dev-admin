@@ -14,7 +14,10 @@ html
       ul
         - for (var a in actions)
           li
-            a(href="/" + actions[a].name)= actions[a].name
+            a(href="/" + actions[a].name)
+              -if (typeof(actions[a].group) != "undefined")
+                =actions[a].group + "/"
+              =actions[a].name
     aside
       p This is for now just a very simple app that lets you select a DB dump from a directory and reload that
     section.main
