@@ -1,17 +1,7 @@
-var config = require('confu')(__dirname + '../../', 'config'
-        + (process.env.LOCAL_CONFIG ? "_" + process.env.LOCAL_CONFIG : '') +  '.json');
 var fs = require('fs')
   , path = require('path')
 ;
-var opts = {
-    name: 'Reload database dump',
-    button: 'Restore dump',
-    params: {
-
-        dump: {
-                  label: 'Select dump',
-                  type: 'select',
-                  refresh_options: function() {
+var refresh_options = function(config) {
                       console.log("in refresh_options");
                       fs.readdir(config.paths.dumps, function(err, files) {
                           if (err) { return console.error("ERROR reading dumps: ", err); }
@@ -24,8 +14,16 @@ var opts = {
                           }
                           opts.params.dump.options = dumps
                       });
-                  }(),
-                  options: []
+                  }
+var opts = {
+    name: 'Reload database dump',
+    button: 'Restore dump',
+    params: {
+
+        dump: {
+                  label: 'Select dump',
+                  type: 'select',
+                  refresh_options: refresh_options,
               },
         db: {
                 label: 'DB',

@@ -220,6 +220,13 @@ function read_actions_from_dir(dir, group) {
                     group: group
                 }
                 // XXX: Need to walk and update any refresh_options calls!
+                if (opts && opts.params) {
+                    for (var k in opts.params) {
+                        if (opts.params[k].refresh_options) {
+                            opts.params[k].refresh_options(config);
+                        }
+                    }
+                }
                 //if (typeof(DATA.actions[name].opts.params))
                 read_script(DATA.actions[name]);
             }
