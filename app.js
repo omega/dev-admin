@@ -81,7 +81,7 @@ function spawn_shell() {
                 // end of the rail!
                 bash.stdin.write("exit 0\n"); // To make sure we exit and spawn a new bash
                 io.sockets.emit('action-end');
-            } else if (line.match(/^\#/)) {
+            } else if (line.match(/^\s*\#/)) {
                 bash.origin.emit('action-comment', { text: line });
                 backlog.push({text: line, type: 'comment'});
                 bash.send_line(i+1); // We just send next right away!
