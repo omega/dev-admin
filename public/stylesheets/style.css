@@ -157,3 +157,9 @@ ul#log li.input:before {
     color: blue;
 }
 
+.ansi .green {
+    color: green;
+}
+.ansi .red {
+    color: red;
+}
