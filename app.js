@@ -21,6 +21,7 @@ function spawn_shell() {
     bash = spawn("bash");
     bash.on("exit", function(code) {
         io.sockets.emit("action-done", {'code': code});
+        console.log(" --> DONE");
         bash = spawn_shell();
     });
     bash.stdout.on("data", function(data) {
