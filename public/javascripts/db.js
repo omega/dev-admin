@@ -42,7 +42,6 @@ $(document).ready(function() {
         $('form').attr('running', 'running');
     });
     socket.on('action-scrollback', function(data) {
-        console.log(data);
         for (var i in data.lines) {
             var d = data.lines[i];
             // Need to spit it out
