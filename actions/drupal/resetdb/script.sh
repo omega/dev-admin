@@ -8,7 +8,6 @@ drush sql-drop -y
 zcat $dump | mysql -u root $db
 
 drush updatedb -y
-drush cc all
 drush pm-enable update -y
 drush pm-refresh
 
@@ -21,3 +20,5 @@ drush role-add-perm --module=devel 1 'access devel information'
 drush role-add-perm --module=devel 2 'access devel information'
 drush vset error_level "1" -yes
 
+# And last but not least, force another cache clear
+drush cc all
