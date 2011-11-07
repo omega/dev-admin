@@ -20,5 +20,8 @@ drush role-add-perm --module=devel 1 'access devel information'
 drush role-add-perm --module=devel 2 'access devel information'
 drush vset error_level "1" -yes
 
+# Copy drfront pages from prod to dev/qa
+rsync -au /mnt/druapl_production_files/drfront/* /var/www/abcnyheter.no/drupal6/files/drfront/
+
 # And last but not least, force another cache clear
 drush cc all
