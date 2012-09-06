@@ -43,7 +43,10 @@ function spawn_shell() {
         });
     });
     bash.run = function(action_config, params, origin) {
-        if (bash.running) return;
+        if (bash.running) {
+            console.log("E: bash process is already running, not starting anything");
+            return;
+        }
         var group = action_config.group;
         var action = action_config.name;
         var script = action_config.script;
